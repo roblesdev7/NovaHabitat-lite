@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tsx backend/src/server.ts",
     "build": "tsc -p backend/tsconfig.json",
+    "postinstall": "npm run build",
     "start": "npm run build && node backend/dist/src/server.js",
     "test": "jest --runInBand --config backend/jest.config.cjs"
   },

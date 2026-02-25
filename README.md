@@ -5,8 +5,9 @@ MVP interno para organizar:
 - CRM básico de leads con seguimiento de interacciones.
 
 ## URL desplegada
-- **Pendiente de despliegue público** (en este entorno no hay credenciales de plataforma).
-- Una vez desplegado, actualizar aquí la URL y validar `GET /health` con `200`.
+- Sistema en producción: https://novahabitat-lite.onrender.com
+- Health check: https://novahabitat-lite.onrender.com/health
+- Swagger UI: https://novahabitat-lite.onrender.com/docs
 
 ## Deploy rápido (Render o Railway)
 

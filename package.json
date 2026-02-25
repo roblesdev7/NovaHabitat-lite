@@ -1,0 +1,36 @@
+{
+  "name": "problemas",
+  "version": "1.0.0",
+  "description": "NovaHabitat Lite MVP API First",
+  "main": "backend/dist/src/server.js",
+  "scripts": {
+    "dev": "tsx backend/src/server.ts",
+    "build": "tsc -p backend/tsconfig.json",
+    "start": "node backend/dist/src/server.js",
+    "test": "jest --runInBand --config backend/jest.config.cjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.8.2",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.3.0",
+    "@types/supertest": "^6.0.3",
+    "@types/swagger-ui-express": "^4.1.8",
+    "jest": "^30.2.0",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.6",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  }
+}

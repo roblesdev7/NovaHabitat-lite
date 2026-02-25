@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Apto 2 hab en Naco",
+    "location": "Naco, Santo Domingo",
+    "price": 185000,
+    "status": "Available"
+  },
+  {
+    "title": "Casa en Arroyo Hondo",
+    "location": "Arroyo Hondo, Santo Domingo",
+    "price": 250000,
+    "status": "Reserved"
+  }
+]

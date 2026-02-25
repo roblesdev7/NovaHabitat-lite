@@ -1,0 +1,224 @@
+NovaHabitat necesita un sistema interno sencillo para organizar dos cosas que hoy se manejan con Excel, WhatsApp y notas sueltas:
+
+Catálogo de propiedades con estados claros.
+Gestión básica de leads (prospectos) con seguimiento.
+
+  Tu tarea es tomar tu documentación de levantamiento (la que ya entregaste) y convertirla en un proyecto mínimo funcional, con enfoque API First, que pueda ejecutarse y esté desplegado en un ambiente público.
+
+Alcance del MVP (NovaHabitat Lite)
+
+Módulo A: Catálogo de Propiedades
+Crear una propiedad
+Editar una propiedad
+Cambiar estado de una propiedad
+Consultar y buscar propiedades por filtros simples
+Módulo B: Leads (CRM básico)
+Crear un lead con canal de entrada
+Cambiar estado de un lead
+Registrar una interacción simple (nota) asociada a un lead
+
+Reglas de negocio obligatorias (RB)
+
+
+RB-01 Estados de propiedad permitidos: Available, Reserved, Rented, Inactive.
+
+RB-02 Estados de lead permitidos: New, Contacted, Closed, Lost.
+
+RB-03 Precio de propiedad no puede ser negativo.
+
+RB-04 Presupuesto del lead no puede ser negativo.
+
+RB-05 No se permite cambiar una propiedad a Rented si no está previamente Reserved o Available (tu decides la regla exacta, pero debes documentarla y testearla).
+
+RB-06 No se permite cambiar un lead a Closed si no existe al menos una interacción registrada para ese lead (nota mínima). Si decides otra condición, debes documentarla y testearla.
+
+RB-07 Los cambios de estado deben registrar quién hizo el cambio y cuándo (auditoría simple).
+
+RB-08 El sistema debe rechazar entradas inválidas con errores claros y consistentes (códigos HTTP y mensaje).  
+
+  
+API First (obligatorio)
+Antes de implementar, debes definir el contrato en OpenAPI.
+El código debe respetar el contrato.
+Si cambias algo durante el desarrollo, debes actualizar el OpenAPI para que siempre refleje el estado real del API.
+MoSCoW (definición que debes incluir en tu entrega)
+Must have: imprescindible para poder considerar el MVP entregado.
+Should have: muy importante, pero el MVP puede salir sin esto si el tiempo no da.
+Could have: aporta valor, pero es opcional.
+Won’t have: no se hará en esta entrega; queda explícitamente fuera por ahora.
+Backlog obligatorio (10 work items)
+
+Debes crear un archivo BACKLOG.md donde conviertas tu documentación en 10 work items usando MoSCoW:
+6 Must
+2 Should
+1 Could
+1 Won’t
+Cada work item debe incluir:
+ID (WI-01, WI-02…)
+Tipo (RF, User Story o Use Case)
+Prioridad MoSCoW
+Descripción clara
+Criterios de aceptación en formato Given/When/Then
+Endpoints involucrados (si aplica)
+Reglas de negocio relacionadas (RB-xx)
+Regla de trazabilidad obligatoria
+
+Cada endpoint debe responder a un requerimiento funcional (RF).
+
+Debes incluir en README una tabla de trazabilidad:
+Endpoint -> RF correspondiente
+Requerimientos funcionales mínimos (10 work items sugeridos)
+
+Aqui te dejo un set sugerido que cumple la distribución MoSCoW. Puedes ajustar detalles, pero debes mantener 10 items con la misma distribución
+
+Must (6)
+
+WI-01 (RF) Crear propiedad
+Endpoint: POST /properties
+Criterios de aceptación:
+
+Given un payload válido con título, ubicación, precio y estado Available
+
+When se crea la propiedad
+
+Then responde 201 con el objeto creado y un id único
+
+And el precio queda almacenado sin ser negativo
+WI-02 (RF) Editar propiedad
+Endpoint: PUT /properties/{id}
+Criterios de aceptación:
+
+Given una propiedad existente
+
+When se actualiza título, precio o ubicación con datos válidos
+
+Then responde 200 con datos actualizados
+
+And si el id no existe responde 404
+WI-03 (RF) Cambiar estado de propiedad + auditoría mínima
+Endpoint: PATCH /properties/{id}/status
+Criterios de aceptación:
+
+Given una propiedad existente en estado Available
+
+When se cambia el estado a Reserved con changedBy y reason opcional
+
+Then responde 200 y guarda audit trail con changedBy y timestamp
+
+And si el cambio viola RB-05 responde 409
+WI-04 (RF) Buscar/Listar propiedades
+Endpoint: GET /properties con filtros opcionales (status, minPrice, maxPrice, locationKeyword)
+Criterios de aceptación:
+
+Given propiedades existentes
+
+When se consulta con filtros
+
+Then responde 200 con resultados correctos
+
+And si no hay resultados responde 200 con lista vacía
+WI-05 (RF) Crear lead
+Endpoint: POST /leads
+Criterios de aceptación:
+
+Given un lead con nombre, canal Instagram y criterios (2 habitaciones, presupuesto 200000)
+
+When se crea el lead
+
+Then responde 201 con id y status New
+
+And si presupuesto es negativo responde 400
+WI-06 (RF) Registrar interacción (nota) en un lead
+Endpoint: POST /leads/{id}/interactions
+Criterios de aceptación:
+
+Given un lead existente
+
+When se crea una interacción tipo NOTE con contenido no vacío
+
+Then responde 201 y la interacción queda asociada al lead
+
+And si lead no existe responde 404
+Should (2)
+
+WI-07 (RF) Cambiar estado de lead
+Endpoint: PATCH /leads/{id}/status
+Criterios de aceptación:
+
+Given un lead existente
+
+When se cambia a Contacted
+
+Then responde 200
+
+And cuando se cambia a Closed sin interacciones responde 409 (RB-06)
+WI-08 (RF) Consultar lead con timeline
+Endpoint: GET /leads/{id}
+Criterios de aceptación:
+
+Given un lead con interacciones
+
+When se consulta el lead
+
+Then responde 200 incluyendo interacciones ordenadas por fecha
+Could (1)
+
+WI-09 (RF) Búsqueda de leads por canal y estado
+Endpoint: GET /leads?channel=Instagram&status=Contacted
+Criterios de aceptación:
+
+Given múltiples leads
+
+When filtro por canal y estado
+
+Then responde 200 con los leads filtrados
+Won’t (1)
+
+WI-10 (RF) Generación automática de contratos de alquiler/venta
+Estado: Won’t have (for now)
+Nota: se documenta como fuera de alcance de esta entrega.
+Tests (obligatorio)
+Debes tener al menos 1 test por cada RF de los work items Must/Should/Could (mínimo 9 tests).
+Los tests deben validar tanto casos felices como al menos un caso de error asociado a la regla de negocio.
+Si usas Node/Express, se recomienda Jest + Supertest, pero el stack es libre.
+OpenAPI (obligatorio)
+
+Debes entregar:
+openapi.yaml o openapi.json en el repositorio
+Swagger UI publicado o accesible desde el deployment (si tu stack lo permite)
+El OpenAPI debe incluir todos los endpoints implementados y sus códigos de respuesta
+Deployment (obligatorio)
+El proyecto debe estar desplegado en un ambiente público.
+Debes entregar una URL funcional y un endpoint GET /health que responda 200.
+No se acepta localhost como entrega final.
+Estructura mínima de entrega
+
+En tu repositorio deben existir:
+README.md
+BACKLOG.md
+openapi.yaml (o json)
+tests/ (carpeta con pruebas)
+data/ (carpeta con ejemplos)
+Contenido mínimo del README.md
+URL del sistema desplegado
+Cómo correr localmente
+Cómo correr los tests
+Cómo probar endpoints (Swagger o Postman)
+Tabla Endpoint -> RF
+Lista de RB implementadas
+Decisiones y trade-offs (2 mínimo)
+Qué negociaste o qué dejaste fuera (incluye el Won’t)
+Datos de prueba obligatorios (deben aparecer en tu demo o en tus ejemplos)
+Propiedad: Apto 2 hab en Naco, 185,000 USD, Available
+Lead: Ana Pérez, Instagram, busca 2 hab, presupuesto 200k
+Negociación con el cliente (Osea yo, su teacher)
+Si llegaste a este punto es porque hiciste mucho scroll o leíste todo, me pones un emoji de pulgar arriba en el chat después de leer esta linea.
+
+Durante el desarrollo puedes hacer preguntas para negociar prioridades o reglas no definidas. Solo hay dos cosas no negociables:
+El contrato OpenAPI debe existir y estar actualizado.
+Las reglas de negocio RB deben estar implementadas y testeadas.  
+QUIERO VISUAL (FRONTEND)
+
+Tips: 
+
+Prioriza terminar los Must con calidad y tests antes de intentar Should/Could, usa persistencia simple.

@@ -1,0 +1,467 @@
+openapi: 3.0.3
+info:
+  title: NovaHabitat Lite API
+  version: 1.0.0
+  description: API First MVP for properties catalog and basic CRM leads.
+servers:
+  - url: http://localhost:3000
+paths:
+  /health:
+    get:
+      summary: Health check
+      responses:
+        '200':
+          description: Service healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+
+  /properties:
+    post:
+      summary: Create property
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePropertyRequest'
+      responses:
+        '201':
+          description: Property created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+    get:
+      summary: List/search properties
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/PropertyStatus'
+        - in: query
+          name: minPrice
+          schema:
+            type: number
+            minimum: 0
+        - in: query
+          name: maxPrice
+          schema:
+            type: number
+            minimum: 0
+        - in: query
+          name: locationKeyword
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Property list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Property'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /properties/{id}:
+    put:
+      summary: Edit property
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePropertyRequest'
+      responses:
+        '200':
+          description: Property updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/PropertyNotFound'
+
+  /properties/{id}/status:
+    patch:
+      summary: Change property status and register audit trail
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePropertyStatusRequest'
+      responses:
+        '200':
+          description: Status changed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Property'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/PropertyNotFound'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+
+  /leads:
+    post:
+      summary: Create lead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateLeadRequest'
+      responses:
+        '201':
+          description: Lead created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+    get:
+      summary: List/search leads by channel and status
+      parameters:
+        - in: query
+          name: channel
+          schema:
+            $ref: '#/components/schemas/LeadChannel'
+        - in: query
+          name: status
+          schema:
+            $ref: '#/components/schemas/LeadStatus'
+      responses:
+        '200':
+          description: Lead list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Lead'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /leads/{id}:
+    get:
+      summary: Get lead with interactions timeline
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: Lead found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '404':
+          $ref: '#/components/responses/LeadNotFound'
+
+  /leads/{id}/interactions:
+    post:
+      summary: Add lead interaction note
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateInteractionRequest'
+      responses:
+        '201':
+          description: Interaction created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LeadInteraction'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/LeadNotFound'
+
+  /leads/{id}/status:
+    patch:
+      summary: Change lead status and register audit trail
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangeLeadStatusRequest'
+      responses:
+        '200':
+          description: Status changed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lead'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/LeadNotFound'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+
+components:
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+
+  responses:
+    ValidationError:
+      description: Validation failed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    PropertyNotFound:
+      description: Property not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    LeadNotFound:
+      description: Lead not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+    ConflictError:
+      description: Business rule conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+
+  schemas:
+    PropertyStatus:
+      type: string
+      enum: [Available, Reserved, Rented, Inactive]
+    LeadStatus:
+      type: string
+      enum: [New, Contacted, Closed, Lost]
+    LeadChannel:
+      type: string
+      enum: [Instagram, WhatsApp, Call, Web]
+
+    AuditPropertyStatus:
+      type: object
+      properties:
+        from:
+          $ref: '#/components/schemas/PropertyStatus'
+        to:
+          $ref: '#/components/schemas/PropertyStatus'
+        changedBy:
+          type: string
+        changedAt:
+          type: string
+          format: date-time
+        reason:
+          type: string
+      required: [from, to, changedBy, changedAt]
+
+    AuditLeadStatus:
+      type: object
+      properties:
+        from:
+          $ref: '#/components/schemas/LeadStatus'
+        to:
+          $ref: '#/components/schemas/LeadStatus'
+        changedBy:
+          type: string
+        changedAt:
+          type: string
+          format: date-time
+        reason:
+          type: string
+      required: [from, to, changedBy, changedAt]
+
+    Property:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        location:
+          type: string
+        price:
+          type: number
+          minimum: 0
+        status:
+          $ref: '#/components/schemas/PropertyStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        statusHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditPropertyStatus'
+      required: [id, title, location, price, status, createdAt, updatedAt, statusHistory]
+
+    LeadInteraction:
+      type: object
+      properties:
+        id:
+          type: string
+        leadId:
+          type: string
+        type:
+          type: string
+          enum: [NOTE]
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, leadId, type, content, createdAt]
+
+    Lead:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        channel:
+          $ref: '#/components/schemas/LeadChannel'
+        criteria:
+          type: string
+        budget:
+          type: number
+          minimum: 0
+        status:
+          $ref: '#/components/schemas/LeadStatus'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+        interactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeadInteraction'
+        statusHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLeadStatus'
+      required: [id, name, channel, budget, status, createdAt, updatedAt, interactions, statusHistory]
+
+    CreatePropertyRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        location:
+          type: string
+        price:
+          type: number
+          minimum: 0
+        status:
+          $ref: '#/components/schemas/PropertyStatus'
+      required: [title, location, price]
+
+    UpdatePropertyRequest:
+      type: object
+      properties:
+        title:
+          type: string
+        location:
+          type: string
+        price:
+          type: number
+          minimum: 0
+        status:
+          $ref: '#/components/schemas/PropertyStatus'
+
+    ChangePropertyStatusRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/PropertyStatus'
+        changedBy:
+          type: string
+        reason:
+          type: string
+      required: [status, changedBy]
+
+    CreateLeadRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        channel:
+          $ref: '#/components/schemas/LeadChannel'
+        criteria:
+          type: string
+        budget:
+          type: number
+          minimum: 0
+      required: [name, channel, budget]
+
+    CreateInteractionRequest:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [NOTE]
+        content:
+          type: string
+      required: [type, content]
+
+    ChangeLeadStatusRequest:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/LeadStatus'
+        changedBy:
+          type: string
+        reason:
+          type: string
+      required: [status, changedBy]
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            details:
+              type: object
+              additionalProperties: true
+          required: [code, message]
+      required: [error]

@@ -1,0 +1,85 @@
+:root {
+  font-family: Arial, sans-serif;
+}
+body {
+  margin: 0;
+  background: #f5f7fb;
+  color: #1f2937;
+}
+header {
+  background: #111827;
+  color: #fff;
+  padding: 16px;
+}
+header h1 {
+  margin: 0;
+}
+header p {
+  margin: 6px 0;
+}
+header a {
+  color: #93c5fd;
+}
+main {
+  max-width: 1000px;
+  margin: 16px auto;
+  padding: 0 12px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+form {
+  display: grid;
+  gap: 8px;
+}
+.inline-form {
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  align-items: center;
+}
+input,
+select,
+button {
+  padding: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+button {
+  cursor: pointer;
+  background: #2563eb;
+  color: white;
+  border: none;
+}
+button:hover {
+  background: #1d4ed8;
+}
+.item {
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 8px;
+  margin-top: 8px;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+small {
+  color: #6b7280;
+}
+#toast {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  background: #111827;
+  color: #fff;
+  padding: 10px 12px;
+  border-radius: 8px;
+  display: none;
+}

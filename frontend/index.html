@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NovaHabitat Lite</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>NovaHabitat Lite</h1>
+      <p>MVP visual para Catálogo y Leads</p>
+      <nav>
+        <a href="/docs" target="_blank" rel="noreferrer">Swagger</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2>Crear Propiedad</h2>
+        <form id="property-form">
+          <input name="title" placeholder="Título" required />
+          <input name="location" placeholder="Ubicación" required />
+          <input name="price" type="number" min="0" placeholder="Precio" required />
+          <select name="status" required>
+            <option>Available</option>
+            <option>Reserved</option>
+            <option>Rented</option>
+            <option>Inactive</option>
+          </select>
+          <button type="submit">Crear</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Propiedades</h2>
+        <form id="property-filter-form" class="inline-form">
+          <select name="status">
+            <option value="">Todos los estados</option>
+            <option>Available</option>
+            <option>Reserved</option>
+            <option>Rented</option>
+            <option>Inactive</option>
+          </select>
+          <input name="locationKeyword" placeholder="Ubicación contiene..." />
+          <button type="submit">Filtrar</button>
+          <button type="button" id="property-refresh">Recargar</button>
+        </form>
+        <div id="properties-list"></div>
+      </section>
+
+      <section class="card">
+        <h2>Crear Lead</h2>
+        <form id="lead-form">
+          <input name="name" placeholder="Nombre" required />
+          <select name="channel" required>
+            <option>Instagram</option>
+            <option>WhatsApp</option>
+            <option>Call</option>
+            <option>Web</option>
+          </select>
+          <input name="criteria" placeholder="Criterios" />
+          <input name="budget" type="number" min="0" placeholder="Presupuesto" required />
+          <button type="submit">Crear</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <h2>Leads</h2>
+        <form id="lead-filter-form" class="inline-form">
+          <select name="channel">
+            <option value="">Todos los canales</option>
+            <option>Instagram</option>
+            <option>WhatsApp</option>
+            <option>Call</option>
+            <option>Web</option>
+          </select>
+          <select name="status">
+            <option value="">Todos los estados</option>
+            <option>New</option>
+            <option>Contacted</option>
+            <option>Closed</option>
+            <option>Lost</option>
+          </select>
+          <button type="submit">Filtrar</button>
+          <button type="button" id="lead-refresh">Recargar</button>
+        </form>
+        <div id="leads-list"></div>
+      </section>
+    </main>
+
+    <div id="toast"></div>
+    <script src="/script.js"></script>
+  </body>
+</html>

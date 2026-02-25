@@ -1,0 +1,237 @@
+Problema 3 - Levantamiento de requerimientos
+Sistema de Gestión Inmobiliaria NovaHabitat  
+
+Objetivo de la actividad
+
+Vas a actuar como analista/ingeniero de software. Tu tarea NO es programar.
+
+Tu tarea es entender el negocio y producir un levantamiento claro y usable para un equipo de desarrollo.
+
+
+Vas a entregar:
+
+	•	Requerimientos funcionales
+	•	Requerimientos no funciones 
+	•	Reglas de negocios
+	•	Modelo conceptual (entidades y relaciones)
+	•	Procesos AS-IS (cómo se hace hoy) y TO-BE (cómo se quiere)
+	•	Lista de preguntas para el cliente y supuestos (si no responden)--------------------------------Contexto  Hola, soy el director de operaciones de , una empresa que gestiona y comercializa inmuebles en República Dominicana.    A) Administración de propiedades (property management)Administramos:
+	•	Edificios (torres de apartamentos)
+	•	Residenciales/ urbanizaciones(con casas y áreas comunes)
+	•	Algunas casas y apartamentos  individuales
+Aquí cobramos:
+	•	Cuotas de mantenimiento (HOA / condominio)
+	•	Alquileres (si también administramos el alquiler)
+	•	Servicios y consumos (agua, basura, planta eléctrica, etc., según el caso)
+	•	Multas (ruidos, morosidad, uso indebido áreas comunes)
+B) Comercialización (ventas y alquileres)
+
+Ofrecemos:
+	•	Propiedades propias  del catálogo de la empresa (pocas)
+	•	Propiedades en tutela de propietarios  (la mayoría): el dueño no es la empresa, pero nos autoriza a vender o alquilar y cobramos comisión.
+Además manejamos:
+	•	Solares/terrenos en venta
+	•	Propiedades amuebladas para alquiler corto (menos frecuente)
+	•	Alquileres largos (lo más común)Situación actual (AS-IS)Hoy trabajamos así:Captación de propiedades
+	•	El propietario manda fotos por WhatsApp y documentos por correo.
+	•	Se llena una ficha en Excel con: ubicación, precio, m², habitaciones, baños, parqueos, mantenimiento, si es amueblado, etc.
+	•	Se suben fotos a Google Drive en carpetas por propiedad.
+	•	Se firma un “acuerdo” con el propietario (a veces en físico, a veces PDF).
+
+
+Clientes interesados
+	•	Entran por Instagram, WhatsApp y llamadas.
+	•	Una asistente guarda todo en un Excel y a veces en notas del celular.
+	•	Se hace seguimiento manual.
+	•	Se pierden clientes por falta de respuesta y porque no sabemos quién está atendiendo qué.
+
+
+Reservas y procesos de alquiler o ventas
+	•	Cuando un cliente quiere alquilar:
+	•	se le pide cédula/pasaporte, carta de trabajo, referencias, etc.
+	•	se valida “a mano”
+	•	se hace contrato en Word (plantilla)
+	•	se coordina entrega/llaves y depósito
+
+
+Cuando un cliente quiere comprar:
+	•	se coordina visita
+	•	se negocia
+	•	se gestiona promesa de venta y luego acto de venta (con abogado)Administracion de edificios y residenciales
+	•	Se registran “inquilinos/residentes” en listas.
+	•	Se facturan cuotas mensuales (muchas veces por WhatsApp).
+	•	Se llevan pagos en Excel.
+	•	Morosos se controlan a mano.
+	•	Mantenimiento y solicitudes: por WhatsApp, sin tickets.
+	•	Reportes para juntas: se arman manualmente.
+
+
+Problemas/dolores actuales
+	•	Información duplicada o perdida (Excel + WhatsApp + Drive).
+	•	No tenemos trazabilidad: quién habló con un cliente, qué se prometió, qué se envió.
+	•	No tenemos control de contratos, renovaciones, depósitos, ni fechas de vencimiento.
+	•	Los propietarios llaman molestos preguntando “¿qué pasó con mi propiedad?”
+	•	En administración, la morosidad se nos va de control.
+	•	No hay un “estado” claro de cada propiedad: disponible / reservada / rentada / en mantenimiento / vendida.
+	•	Hay riesgo legal por documentos mal organizados.Lo que queremos (TO-BE)
+	•	Queremos un sistema web (y si se puede móvil luego), que centralice:1) Catálogo de propiedades
+	•	Registrar propiedades con datos completos.
+	•	Clasificar por tipo: edificio, apartamento, casa, solar, local comercial.
+	•	Registrar si la propiedad es:
+	•	Propia (empresa)
+	•	De propietario a externo (tutela/mandato) con datos del dueño y condiciones.
+
+
+Guardar fotos y documentos en un storage (no queremos Drive manual).
+
+
+
+Estados de propiedad (mínimo):
+	•	Disponible
+	•	Reservada
+	•	Rentada
+	•	En mantenimiento
+	•	En negociación
+	•	Vendida / Cerrada
+	•	Inactiva
+
+2) Gestión de clientes y leads (CRM básico)
+	•	Registrar leads por canal (WhatsApp/Instagram/llamada/web).
+	•	Estados del lead:
+	•	Nuevo
+	•	Contactado
+	•	Visitó
+	•	En negociación
+	•	Cerrado (rentado/comprado)
+	•	Perdido
+
+
+Asignación a agentes.
+
+
+
+Historial de interacciones (notas, llamadas, mensajes, visitas).
+
+
+
+Recordatorios/tareas de seguimiento.
+
+
+
+3) Proceso de alquiler
+	•	Solicitud de alquiler con checklist de documentos.
+	•	Evaluación: aprobado/rechazado/pendiente.
+	•	Contrato con plantilla (generación).
+	•	Gestión de depósito y pagos iniciales.
+	•	Registro de inquilino(s), fiador, y ocupantes (si aplica).
+	•	Fechas clave:
+	•	Inicio de contrato
+	•	Fin de contrato
+	•	Renovación
+	•	Aumento anual (si aplica)
+
+
+Gestión de salida: inspección, devolución de depósito, penalidades.
+
+
+
+4) Proceso de venta
+	•	Control de visitas.
+	•	Ofertas y contraofertas.
+	•	Reservas con monto de separación.
+	•	Documentos: promesa de venta, acto, certificaciones, etc.
+	•	Comisiones (agente + empresa).
+	•	Cierre: fecha, notaría/abogado (referencia), estado final.
+
+5) Administración de edificios/residenciales
+	•	Registro de:
+	•	Propietarios por unidad
+	•	Residentes/inquilinos por unidad
+	•	Unidades (aptos/casas) por proyecto
+
+
+Facturación mensual de mantenimiento.
+
+
+Control de pagos, morosidad y recargos.
+
+
+Solicitudes/tickets:
+	•	mantenimiento
+	•	quejas
+	•	acceso/seguridad
+
+
+Reportes:
+	•	morosos
+	•	ingresos vs gastos (si se lleva)
+	•	incidentes y solicitudes por estado
+
+6) Roles y permisos
+	•	Administrador
+	•	Agente de ventas/alquiler
+	•	Asistente
+	•	Encargado de administración (condominios)
+	•	(Opcional) Propietario externo (portal básico)
+	•	(Opcional) Residente (ver balance, crear ticket)
+
+7) Integraciones deseadas (no todas son MVP)
+	•	WhatsApp: al menos plantillas para mensajes (no integración real obligatoria)
+	•	Email: notificaciones básicas (contrato listo, pago vencido)
+	•	Pasarela de pago: “quizás después”
+	•	Publicación a redes/portales: “quizás después”
+
+
+Tu tarea (Individual)
+Entregables (obligatorios)
+
+Requerimiento funcionales  RF
+	•	mínimo 25, numerados (RF-01…)
+	•	cada uno con: descripción + actor + prioridad (Must/Should/Could)
+
+
+Requerimiento no funcionales RNF
+	•	mínimo 15, divididos por categoría:
+	•	Seguridad
+	•	Rendimiento
+	•	Disponibilidad
+	•	Escalabilidad
+	•	Usabilidad/UX
+	•	Observabilidad (logs/auditoría)
+	•	Mantenibilidad
+	•	Legal/privacidad
+
+
+Reglas de negocions RB
+	•	mínimo 15 reglas claras (RB-01…)
+	•	ejemplo de formato: “Si X ocurre, entonces Y. Excepción: Z.”
+
+
+Modelo conceptual 
+	•	lista de entidades con atributos clave (sin DB todavía)
+	•	ejemplo: Property, Owner, Listing, Lead, Contract, Payment, Building, Unit, Ticket…
+
+
+AS-IS VS TO-BE
+	•	1 diagrama o tabla comparativa por proceso:
+	•	Captación de propiedades
+	•	Alquiler
+	•	Venta
+	•	Administración (facturación + morosidad)
+
+
+y pain points resueltos
+
+Pregunta al cliente (supuesto)
+	•	mínimo 12 preguntas inteligentes
+	•	si no hay respuesta, escribe tu supuesto y el impacto.
+
+
+Formato de entrega
+	•	Un solo documento PDF o Markdown (según indique la clase)
+	•	Bien estructurado con índice.Deben indentificar leyendo
+	•	Hay 2 negocios mezclados: administracion y comercializaciones.
+	•	Hay activos propios y activos de terceros (tutela) → cambia comisiones, permiso, reportes.
+	•	Documentos legales → necesita  auditoria y control.
+	•	Hay estados de propiedad y estados de lead → no confundir.
+	•	Se usan canales desorganizados → el CRM no es “nice to have”, es central.

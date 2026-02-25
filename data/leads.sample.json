@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Ana Pérez",
+    "channel": "Instagram",
+    "criteria": "Busca 2 hab",
+    "budget": 200000,
+    "status": "New"
+  },
+  {
+    "name": "Carlos Ruiz",
+    "channel": "WhatsApp",
+    "criteria": "Apartamento amueblado",
+    "budget": 180000,
+    "status": "Contacted"
+  }
+]

@@ -14,8 +14,12 @@ MVP interno para organizar:
 1. Sube este proyecto a GitHub.
 2. En Render, crea un **New + Web Service** conectando el repo.
 3. Render detectará [render.yaml](render.yaml) automáticamente.
-4. Espera el deploy y prueba: `https://TU-URL.onrender.com/health`.
-5. Coloca esa URL final en la sección **URL desplegada** de este README.
+4. Si Render NO toma el `render.yaml`, configura manualmente:
+	- Build Command: `npm install`
+	- Start Command: `npm start`
+	- Health Check Path: `/health`
+5. Espera el deploy y prueba: `https://TU-URL.onrender.com/health`.
+6. Coloca esa URL final en la sección **URL desplegada** de este README.
 
 ### Opción B: Railway
 1. Sube este proyecto a GitHub.
